@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from bingo.symbolic_regression.symbolic_regressor import SymbolicRegressor
+from symbolic_regression.symbolic_regressor import SymbolicRegressor
 
 X_0 = np.linspace(-10, 10, num=30).reshape((-1, 1))
 X = np.array(X_0)
