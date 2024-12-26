@@ -2,6 +2,8 @@ import os
 from evolutionary_algorithms.age_fitness import AgeFitnessEA
 from stats.pareto_front import ParetoFront
 
+from evolutionary_optimizers.island import Island
+
 class SymbolicRegressor():
     def __init__(
         self, 
@@ -13,10 +15,19 @@ class SymbolicRegressor():
         self.population_size = population_size
         self.stack_size = stack_size
         self.use_simplification = use_simplification
+
+        self.generator = None
+        self.component_generator = None
         
         if evolutionary_algorithm is None:
             evolutionary_algorithm = AgeFitnessEA
         self.evolutionary_algorithm = evolutionary_algorithm
+
+    def _make_island(self, dset_size, evo_alg, hof):
+        if dset_size < 1200:
+            return Island(
+                evo_alg, self.population_size, hall_of_fame=hof
+            )
 
 
     def _get_archipelago(self, X, y, n_processes): 
