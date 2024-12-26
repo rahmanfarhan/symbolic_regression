@@ -50,6 +50,7 @@ Node      Name                                     Math
 
 
 import numpy as np
+from sympy.core import Expr
 
 class AGraph():
 
@@ -60,8 +61,11 @@ class AGraph():
         if equation is None:
             self._command_array = np.empty([0, 3], dtype=int)
 
-            self._simplified_command_array = np.empty([0, 3], dtype=int)
-            self._simplified_constants = []
-
-            self._needs_opt = False
-            self._modified = False
+        elif isinstance(equation, (Expr, str)): #check if equation is a sympy expression or a string
+            command_array, constants = eq_string_to_command_array_and_constants(
+                str(equation)
+            )
+            self.command_array = command_array
+      
+        else:
+            raise TypeError("equation is not in a valid format")
