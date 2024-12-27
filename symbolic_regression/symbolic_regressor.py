@@ -36,21 +36,25 @@ class SymbolicRegressor():
     def _make_island(self, dset_size, evo_alg, hof):
         if dset_size < 1200:
             return Island(
-                evo_alg, self.population_size, hall_of_fame=hof
+                evo_alg, self.generator, self.population_size, hall_of_fame=hof
             )
 
 
     def _get_archipelago(self, X, y, n_processes): 
 
+        #get component generator
         self.component_generator = ComponentGenerator(X.shape[1])
         for operator in self.operators:
             self.component_generator.add_operator(operator)
 
-        self.generator = AGraphGenerator( 
+        #get generator using component generator
+        self.generator = AGraphGenerator(
+            self.stack_size, 
             self.component_generator,
             use_python=True
         )
 
+        #get evolutionary algorithm using generator
         if self.evolutionary_algorithm == AgeFitnessEA:
             evo_alg = self.evolutionary_algorithm(self.generator)
        
