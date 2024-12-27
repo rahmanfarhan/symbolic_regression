@@ -1,5 +1,52 @@
 
 
+def infix_to_postfix(infix_tokens):
+    """Converts a list of infix tokens into its corresponding
+    list of postfix tokens (e.g. ["a", "+", "b"] -> ["a", "b", "+"])
+
+    Based on the Dijkstra's Shunting-yard algorithm
+
+    Parameters
+    ----------
+    infix_tokens : list of str
+        A list of infix string tokens
+
+    Returns
+    -------
+    postfix_tokens : list of str
+        A list of postfix string tokens corresponding
+        to the expression given by infix_tokens
+    """
+    stack = []  # index -1 = top (the data structure, not a command array)
+    output = []
+    for token in infix_tokens:
+        if token in operators:
+            while len(stack) > 0 and stack[-1] in operators and \
+                (precedence[stack[-1]] > precedence[token] or
+                 precedence[stack[-1]] == precedence[token] and token != "^"):
+                output.append(stack.pop())
+            stack.append(token)
+        elif token == "(" or token in functions:
+            stack.append(token)
+        elif token == ")":
+            while len(stack) > 0 and stack[-1] != "(":
+                output.append(stack.pop())
+            if len(stack) == 0 or stack.pop() != "(":  # get rid of "("
+                raise RuntimeError("Mismatched parenthesis")
+            if len(stack) > 0 and stack[-1] in functions:
+                output.append(stack.pop())
+        else:
+            output.append(token)
+
+    while len(stack) > 0:
+        token = stack.pop()
+        if token == "(":
+            raise RuntimeError("Mismatched parenthesis")
+        output.append(token)
+
+    return output
+
+
 
 def eq_string_to_infix_tokens(eq_string):
     """Converts an equation string to infix_tokens

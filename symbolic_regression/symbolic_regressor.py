@@ -4,6 +4,9 @@ from stats.pareto_front import ParetoFront
 
 from evolutionary_optimizers.island import Island
 from .agraph.generator import AGraphGenerator
+from .agraph.component_generator import ComponentGenerator
+
+DEFAULT_OPERATORS = {"+", "-", "*", "/"}
 
 class SymbolicRegressor():
     def __init__(
@@ -11,11 +14,17 @@ class SymbolicRegressor():
         population_size=500, 
         stack_size=20, 
         use_simplification=True,
-        evolutionary_algorithm=None):
+        evolutionary_algorithm=None,
+        operators=None):
         
         self.population_size = population_size
         self.stack_size = stack_size
         self.use_simplification = use_simplification
+
+        
+        if operators is None:
+            operators = DEFAULT_OPERATORS
+        self.operators = operators
 
         self.generator = None
         self.component_generator = None
@@ -32,6 +41,10 @@ class SymbolicRegressor():
 
 
     def _get_archipelago(self, X, y, n_processes): 
+
+        self.component_generator = ComponentGenerator(X.shape[1])
+        for operator in self.operators:
+            self.component_generator.add_operator(operator)
 
         self.generator = AGraphGenerator( 
             self.component_generator,
