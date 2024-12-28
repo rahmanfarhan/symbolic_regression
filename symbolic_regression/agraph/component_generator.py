@@ -10,22 +10,15 @@ class ComponentGenerator:
 
         self._operator_pmf = ProbabilityMassFunction()
 
-    
     def add_operator(self, operator_to_add, operator_weight=None):
-        """Add an operator number to the set of possible operators
-
-        Parameters
-        ----------
-        operator_to_add : int, str
-            operator integer code (e.g. 2, 3) defined in Agraph operator maps
-            or an operator string description (e.g. "+", "addition")
-        operator_weight : number
-                          relative weight of operator probability
-        """
- 
         operator_number = operator_to_add
-
         self._operator_pmf.add_item(operator_number, operator_weight)
+
+    def random_operator_parameter(stack_location):
+        return np.random.randint(stack_location)    
+
+    def random_terminal(self):
+        return self._terminal_pmf.draw_sample()    
 
     def random_terminal_command(self, _=None):
    
