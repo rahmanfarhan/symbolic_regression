@@ -1,0 +1,45 @@
+@startuml
+package "Symbolic Regressor" {
+    class SymbolicRegressor {
+        - population_size : int
+        - stack_size : int
+        - use_simplification : bool
+        - operators : set
+        - generator : AGraphGenerator
+        - component_generator : ComponentGenerator
+        - evolutionary_algorithm : AgeFitnessEA
+
+        + __init__(population_size=500, stack_size=20, use_simplification=True, evolutionary_algorithm=None, operators=None)
+        - _make_island(dset_size, evo_alg, hof) : Island
+        - _get_archipelago(X, y, n_processes) : Island
+        + fit(X, y)
+        + get_best_individual()
+    }
+
+    class AgeFitnessEA {
+        + __init__(generator : AGraphGenerator)
+    }
+
+    class ParetoFront
+
+    class Island {
+        + __init__(evolutionary_algorithm, generator, population_size, hall_of_fame)
+    }
+
+    class AGraphGenerator {
+        + __init__(stack_size : int, component_generator : ComponentGenerator, use_python : bool)
+    }
+
+    class ComponentGenerator {
+        + __init__(input_x_dimension : int)
+        + add_operator(operator_to_add, operator_weight=None)
+    }
+}
+
+SymbolicRegressor --> AgeFitnessEA : uses
+SymbolicRegressor --> ParetoFront : uses
+SymbolicRegressor --> Island : creates
+SymbolicRegressor --> AGraphGenerator : uses
+SymbolicRegressor --> ComponentGenerator : uses
+Island --> ParetoFront : uses
+@enduml
