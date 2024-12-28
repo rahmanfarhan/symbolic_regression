@@ -39,7 +39,6 @@ class SymbolicRegressor():
                 evo_alg, self.generator, self.population_size, hall_of_fame=hof
             )
 
-
     def _get_archipelago(self, X, y, n_processes): 
 
         #get component generator
@@ -62,14 +61,12 @@ class SymbolicRegressor():
 
         island = self._make_island(len(X), evo_alg, hof) 
         return island
-        pass
 
     def fit(self, X, y):
 
         n_cpus = int(os.environ.get("OMP_NUM_THREADS", "0"))
         self.archipelago = self._get_archipelago(X, y, n_cpus)
         
-        pass
 
     def get_best_individual(self):
         pass

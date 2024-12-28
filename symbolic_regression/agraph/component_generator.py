@@ -4,11 +4,27 @@ from util.probability_mass_function import ProbabilityMassFunction
 
 class ComponentGenerator:
 
-    def __init__(self, input_x_dimension,num_initial_load_statements=1):
+    def __init__(self, 
+        input_x_dimension,
+        num_initial_load_statements=1, 
+        constant_probability=None):
+
         self.input_x_dimension = input_x_dimension
         self._num_initial_load_statements = num_initial_load_statements
 
         self._operator_pmf = ProbabilityMassFunction()
+        self._terminal_pmf = self._make_terminal_pdf(constant_probability)
+
+
+    def _make_terminal_pdf(self, constant_probability):
+        if constant_probability is None:
+            terminal_weight = [1, self.input_x_dimension]
+        else:
+            terminal_weight = [constant_probability,
+                               1.0 - constant_probability]
+                               
+        return ProbabilityMassFunction(items=[1, 0], weights=terminal_weight)
+
 
     def add_operator(self, operator_to_add, operator_weight=None):
         operator_number = operator_to_add
