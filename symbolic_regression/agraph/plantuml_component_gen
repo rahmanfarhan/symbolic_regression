@@ -1,0 +1,19 @@
+@startuml
+class ComponentGenerator {
+    - input_x_dimension : int
+    - _num_initial_load_statements : int
+    - _operator_pmf : ProbabilityMassFunction
+
+    + __init__(input_x_dimension: int, num_initial_load_statements=1)
+    + add_operator(operator_to_add, operator_weight=None)
+    + random_terminal_command(_=None)
+    + random_command(stack_location)
+}
+
+class ProbabilityMassFunction {
+    + add_item(item, weight=None)
+    + draw_sample() : Callable
+}
+
+ComponentGenerator --> ProbabilityMassFunction : uses
+@enduml
